@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duit Raya</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('Posting_KV-01.jpg') no-repeat center center fixed; /* Replace with a Hari Raya-themed image */
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #ffeb3b; /* Festive yellow */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+        #spinButton {
+            background-color: #4caf50; /* Green for Hari Raya */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        #spinButton:hover {
+            background-color: #388e3c; /* Darker green */
+            transform: scale(1.1);
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffeb3b; /* Festive yellow */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            position: relative;
+        }
+        #history {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #fff;
+        }
+        #history ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #history li {
+            margin: 5px 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #clearHistory {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #d32f2f; /* Red for delete */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        #clearHistory:hover {
+            background-color: #b71c1c; /* Darker red */
+            transform: scale(1.1);
+        }
+        /* Add animation for the boom effect */
+        @keyframes boomEffect {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        .boom {
+            animation: boomEffect 0.5s ease-out;
+        }
+        /* Add styles for the popup box */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            animation: none; /* Remove animation to keep it fixed */
+        }
+        .popup.red {
+            background-color: #d32f2f; /* Red for 40 */
+        }
+        .popup.green {
+            background-color: #4caf50; /* Green for above 40 */
+        }
+        @keyframes fadeUp {
+            0% {
+                transform: translateY(10px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Selamat Hari Raya! Duit Raya Spin</h1>
+    <button id="spinButton" style="display: block; margin: 0 auto;">Spin</button>
+    <div id="result">
+        <span></span>
+        <button id="topBoosterButton" style="position: absolute; top: -40px; right: 0; background-color: #2196f3; color: white; border: none; padding: 5px 10px; font-size: 14px; border-radius: 5px; cursor: pointer;">Top Booster</button>
+    </div>
+    <div id="history">
+        <h3>Spin History:</h3>
+        <ul id="historyList"></ul>
+    </div>
+    <button id="clearHistory" title="Clear History">🗑️</button>
+    <script>
+        // Load history from localStorage on page load
+        window.addEventListener('load', function() {
+            const savedHistory = JSON.parse(localStorage.getItem('duitRayaHistory')) || [];
+            const historyList = document.getElementById('historyList');
+            savedHistory.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = item;
+                historyList.appendChild(listItem);
+            });
+        });
+
+        document.getElementById('spinButton').addEventListener('click', function() {
+            const spinButton = document.getElementById('spinButton');
+            const resultDiv = document.getElementById('result');
+            spinButton.textContent = 'Spinning...'; // Change button text to "Spinning..."
+            spinButton.disabled = true; // Disable the button during the spin
+
+            let spinInterval = setInterval(() => {
+                const randomSpin = Math.floor(Math.random() * 100) + 1; // Generate random numbers during spin
+                resultDiv.textContent = `RM: ${randomSpin}`;
+            }, 100); // Update every 100ms for suspense
+
+            setTimeout(() => {
+                clearInterval(spinInterval); // Stop the spinning animation
+
+                let randomNumber;
+                const randomPercentage = Math.random() * 100; // Generate a random percentage (0-100)
+
+                if (randomPercentage < 90) {
+                    // 90% chance for 20-29
+                    randomNumber = Math.floor(Math.random() * (29 - 20 + 1)) + 20;
+                } else if (randomPercentage < 99) {
+                    // 9% chance for 30-39
+                    randomNumber = Math.floor(Math.random() * (39 - 30 + 1)) + 30;
+                } else if (randomPercentage < 99.8) {
+                    // 0.8% chance for 40-49
+                    randomNumber = Math.floor(Math.random() * (49 - 40 + 1)) + 40;
+                } else {
+                    // 0.2% chance for 50-100
+                    randomNumber = Math.floor(Math.random() * (100 - 50 + 1)) + 50;
+                }
+
+                const resultText = `RM: ${randomNumber}`;
+                resultDiv.textContent = resultText;
+
+                // Add popup for all results
+                const popupDiv = document.createElement('div');
+                popupDiv.classList.add('popup', 'green'); // Always green for "Tahniah!"
+                popupDiv.textContent = 'Tahniah!';
+                document.body.appendChild(popupDiv);
+
+                // Remove popup after 3 seconds
+                setTimeout(() => {
+                    popupDiv.remove();
+                }, 3000);
+
+                // Record the number in the history
+                const historyList = document.getElementById('historyList');
+                const listItem = document.createElement('li');
+                listItem.textContent = resultText;
+                historyList.appendChild(listItem);
+
+                // Save the history to localStorage
+                const currentHistory = JSON.parse(localStorage.getItem('duitRayaHistory')) || [];
+                currentHistory.push(resultText);
+                localStorage.setItem('duitRayaHistory', JSON.stringify(currentHistory));
+
+                spinButton.textContent = 'Spin'; // Reset button text
+                spinButton.disabled = false; // Re-enable the button
+            }, 3000); // Simulate a delay of 3 seconds for suspense
+        });
+
+        // Clear history functionality with password
+        document.getElementById('clearHistory').addEventListener('click', function() {
+            const password = prompt('Enter the password to clear the history:');
+            if (password === 'amiraqasha1041') { // Updated password
+                if (confirm('Are you sure you want to clear the history?')) {
+                    localStorage.removeItem('duitRayaHistory'); // Clear history from localStorage
+                    document.getElementById('historyList').innerHTML = ''; // Clear history from the UI
+                    alert('History cleared successfully!');
+                }
+            } else {
+                alert('Incorrect password. History not cleared.');
+            }
+        });
+
+        document.getElementById('topBoosterButton').addEventListener('click', function() {
+            const password = prompt('Enter the password to use the booster:');
+            if (password === 'aqilhtml' || password === 'aidilpython') { // Updated passwords
+                const emojiNotification = document.createElement('div');
+                emojiNotification.textContent = '⬆️';
+                emojiNotification.style.position = 'absolute';
+                emojiNotification.style.top = '-20px';
+                emojiNotification.style.right = '0';
+                emojiNotification.style.fontSize = '24px';
+                emojiNotification.style.animation = 'fadeUp 1s ease-out';
+                emojiNotification.style.opacity = '0';
+                document.getElementById('result').appendChild(emojiNotification);
+
+                // Remove the emoji after animation
+                setTimeout(() => {
+                    emojiNotification.remove();
+                }, 1000);
+            } else {
+                alert('Incorrect password. Booster not activated.');
+            }
+        });
+    </script>
+</body>
+</html>
