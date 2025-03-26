@@ -130,11 +130,10 @@
     </style>
 </head>
 <body>
-    <h1>Selamat Hari Raya! Duit Raya Spin</h1>
+    <h1>Selamat Hari Raya!</h1>
     <button id="spinButton" style="display: block; margin: 0 auto;">Spin</button>
     <div id="result">
         <span></span>
-        <button id="topBoosterButton" style="position: absolute; top: -40px; right: 0; background-color: #2196f3; color: white; border: none; padding: 5px 10px; font-size: 14px; border-radius: 5px; cursor: pointer;">Top Booster</button>
     </div>
     <div id="history">
         <h3>Spin History:</h3>
@@ -225,28 +224,6 @@
                 }
             } else {
                 alert('Incorrect password. History not cleared.');
-            }
-        });
-
-        document.getElementById('topBoosterButton').addEventListener('click', function() {
-            const password = prompt('Enter the password to use the booster:');
-            if (password === 'aqilhtml' || password === 'aidilpython') { // Updated passwords
-                const emojiNotification = document.createElement('div');
-                emojiNotification.textContent = '⬆️';
-                emojiNotification.style.position = 'absolute';
-                emojiNotification.style.top = '-20px';
-                emojiNotification.style.right = '0';
-                emojiNotification.style.fontSize = '24px';
-                emojiNotification.style.animation = 'fadeUp 1s ease-out';
-                emojiNotification.style.opacity = '0';
-                document.getElementById('result').appendChild(emojiNotification);
-
-                // Remove the emoji after animation
-                setTimeout(() => {
-                    emojiNotification.remove();
-                }, 1000);
-            } else {
-                alert('Incorrect password. Booster not activated.');
             }
         });
     </script>
