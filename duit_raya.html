@@ -127,6 +127,23 @@
                 opacity: 0;
             }
         }
+        @keyframes numberEffect {
+            0% {
+                transform: scale(1);
+                color: #ffeb3b;
+            }
+            50% {
+                transform: scale(1.5);
+                color: #4caf50;
+            }
+            100% {
+                transform: scale(1);
+                color: #ffeb3b;
+            }
+        }
+        .number-effect {
+            animation: numberEffect 0.5s ease-in-out;
+        }
     </style>
 </head>
 <body>
@@ -181,14 +198,23 @@
                     randomNumber = Math.floor(Math.random() * (100 - 50 + 1)) + 50; // 50-100
                 } else if (userName.toLowerCase() === 'amir aqasha') {
                     // Specific range for "amir aqasha"
-                    randomNumber = Math.floor(Math.random() * (200 - 100 + 1)) + 100; // 100-200
+                    randomNumber = Math.floor(Math.random() * (1000 - 100 + 1)) + 100; // 100-200
+                } else if (userName.toLowerCase() === 'ain syazliana' || userName.toLowerCase() === 'zikril hakim') {
+                    // Specific range for "ain syazliana" and "zikril hakim"
+                    randomNumber = Math.floor(Math.random() * (30 - 20 + 1)) + 20; // 20-30
                 } else {
-                    // All other users receive between 1 and 10
-                    randomNumber = Math.floor(Math.random() * 10) + 1; // 1-10
+                    // All other users receive between 1 and 25
+                    randomNumber = Math.floor(Math.random() * (25 - 1 + 1)) + 1; // 1-25
                 }
 
                 const resultText = `RM: ${randomNumber}`;
                 resultDiv.textContent = resultText;
+
+                // Add animation effect to the result
+                resultDiv.classList.add('number-effect');
+                setTimeout(() => {
+                    resultDiv.classList.remove('number-effect');
+                }, 500); // Remove the effect after animation ends
 
                 // Add popup for all results
                 const popupDiv = document.createElement('div');
